@@ -1,8 +1,6 @@
 import pygame
 import random
 import time
-import sys
-import os
 
 clock = pygame.time.Clock()
 def load_image(name, color_key=None):
@@ -62,7 +60,7 @@ def tab(screen, size, records, score, name):
         screen.blit(rnt, (size[0] + 20, 105 + i * 50))
 
 def start_screen(size):
-    fon = pygame.transform.scale(load_image('start screen.png'), (size[0] + 350, size[1]))
+    fon = pygame.transform.scale(load_image('start screen.png'), (size[0] + 400, size[1]))
     font = pygame.font.Font("Arcade.txt", 50)
     string_rendered = font.render("PRESS ANY KEY", True, (255, 255, 255))
     start = True
@@ -185,6 +183,20 @@ if __name__=='__main__':
                 if f:
                     print("Победа!")
                     win = True
+                    tr = True
+                    for i in records:
+                        if i[0] == name:
+                            tr = False
+                            break
+                    if tr:
+                        records.append([name, str(score)])
+                    records.sort(key=lambda x: int(x[1]), reverse=True)
+                    save = []
+                    for i in records:
+                        save.append("; ".join(i))
+                    file = open("records.txt", "w")
+                    file.write("/--/".join(save))
+                    file.close()
                     running = False
                 list[g[0] % (h // 50)][g[1] % (w // 50)] = 1
                 list[(g[0] + y) % (h // 50)][(g[1] + x) % (w // 50)] = 2
